@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbMvcStokModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TblKategoriler">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TblUrunler" Relationship="Self.FK_TblUrunler_TblKategoriler" FromRole="TblKategoriler" ToRole="TblUrunler" />
+  </EntityType>
+  <EntityType Name="Tblmusteri">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Sehir" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Bakiye" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="TblSatıslar" Relationship="Self.FK_TblSatıslar_Tblmusteri" FromRole="Tblmusteri" ToRole="TblSatıslar" />
+    <Property Name="Durum1" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="TblPersonel">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Departman" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TblSatıslar" Relationship="Self.FK_TblSatıslar_TblPersonel" FromRole="TblPersonel" ToRole="TblSatıslar" />
+  </EntityType>
+  <EntityType Name="TblSatıslar">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Urun" Type="Int32" />
+    <Property Name="Personel" Type="Int32" />
+    <Property Name="Musteri" Type="Int32" />
+    <Property Name="Fiyat" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Tarih" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Tblmusteri" Relationship="Self.FK_TblSatıslar_Tblmusteri" FromRole="TblSatıslar" ToRole="Tblmusteri" />
+    <NavigationProperty Name="TblPersonel" Relationship="Self.FK_TblSatıslar_TblPersonel" FromRole="TblSatıslar" ToRole="TblPersonel" />
+    <NavigationProperty Name="TblUrunler" Relationship="Self.FK_TblSatıslar_TblUrunler" FromRole="TblSatıslar" ToRole="TblUrunler" />
+  </EntityType>
+  <EntityType Name="TblUrunler">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Marka" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Stok" Type="Int16" />
+    <Property Name="AlisFiyat" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="SatisFiyat" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Kategori" Type="Int32" />
+    <NavigationProperty Name="TblKategoriler" Relationship="Self.FK_TblUrunler_TblKategoriler" FromRole="TblUrunler" ToRole="TblKategoriler" />
+    <NavigationProperty Name="TblSatıslar" Relationship="Self.FK_TblSatıslar_TblUrunler" FromRole="TblUrunler" ToRole="TblSatıslar" />
+    <Property Name="urun" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK_TblUrunler_TblKategoriler">
+    <End Role="TblKategoriler" Type="Self.TblKategoriler" Multiplicity="0..1" />
+    <End Role="TblUrunler" Type="Self.TblUrunler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TblKategoriler">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TblUrunler">
+        <PropertyRef Name="Kategori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TblSatıslar_Tblmusteri">
+    <End Role="Tblmusteri" Type="Self.Tblmusteri" Multiplicity="0..1" />
+    <End Role="TblSatıslar" Type="Self.TblSatıslar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tblmusteri">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TblSatıslar">
+        <PropertyRef Name="Musteri" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TblSatıslar_TblPersonel">
+    <End Role="TblPersonel" Type="Self.TblPersonel" Multiplicity="0..1" />
+    <End Role="TblSatıslar" Type="Self.TblSatıslar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TblPersonel">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TblSatıslar">
+        <PropertyRef Name="Personel" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TblSatıslar_TblUrunler">
+    <End Role="TblUrunler" Type="Self.TblUrunler" Multiplicity="0..1" />
+    <End Role="TblSatıslar" Type="Self.TblSatıslar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TblUrunler">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TblSatıslar">
+        <PropertyRef Name="Urun" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbMvcStokEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TblKategoriler" EntityType="Self.TblKategoriler" />
+    <EntitySet Name="Tblmusteri" EntityType="Self.Tblmusteri" />
+    <EntitySet Name="TblPersonel" EntityType="Self.TblPersonel" />
+    <EntitySet Name="TblSatıslar" EntityType="Self.TblSatıslar" />
+    <EntitySet Name="TblUrunler" EntityType="Self.TblUrunler" />
+    <AssociationSet Name="FK_TblUrunler_TblKategoriler" Association="Self.FK_TblUrunler_TblKategoriler">
+      <End Role="TblKategoriler" EntitySet="TblKategoriler" />
+      <End Role="TblUrunler" EntitySet="TblUrunler" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TblSatıslar_Tblmusteri" Association="Self.FK_TblSatıslar_Tblmusteri">
+      <End Role="Tblmusteri" EntitySet="Tblmusteri" />
+      <End Role="TblSatıslar" EntitySet="TblSatıslar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TblSatıslar_TblPersonel" Association="Self.FK_TblSatıslar_TblPersonel">
+      <End Role="TblPersonel" EntitySet="TblPersonel" />
+      <End Role="TblSatıslar" EntitySet="TblSatıslar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TblSatıslar_TblUrunler" Association="Self.FK_TblSatıslar_TblUrunler">
+      <End Role="TblUrunler" EntitySet="TblUrunler" />
+      <End Role="TblSatıslar" EntitySet="TblSatıslar" />
+    </AssociationSet>
+    <EntitySet Name="tbladmin" EntityType="DbMvcStokModel.tbladmin" />
+  </EntityContainer>
+  <EntityType Name="tbladmin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kulanici" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="sifre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

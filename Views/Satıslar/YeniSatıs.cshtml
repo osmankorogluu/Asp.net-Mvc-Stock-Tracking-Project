@@ -1,0 +1,31 @@
+﻿@model MvcStok.Models.Entity.TblSatıslar
+@{
+    ViewBag.Title = "YeniSatıs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form method="post">
+    <h2>Satış Paneli</h2>
+    <br />
+    <label>Ürün</label>
+    @Html.TextBoxFor(x => x.Urun, new { @class = "form-control" })
+    <br />
+
+    <label>Personel</label>
+    @Html.TextBoxFor(x => x.Personel, new { @class = "form-control" })
+    <br />
+
+    <label>Müşteri</label>
+    @Html.TextBoxFor(x => x.Musteri, new { @class = "form-control" })
+    <br />
+
+    <label>Fiyat</label>
+    @Html.TextBoxFor(x => x.Fiyat, new { @class = "form-control" })
+    <br />
+
+
+
+    <button class="btn btn-info">Satışı Yap</button>
+</form>
+
+
